@@ -2,6 +2,8 @@
 
 const yargs = require('yargs/yargs');
 const { hideBin } = require('yargs/helpers');
+const handler = require('serve-handler');
+const http = require('http');
 const shell = require('shelljs');
 
 // console.log("dev ops!");
@@ -37,7 +39,15 @@ yargs(hideBin(process.argv))
     '',
     (yargs) => yargs,
     (argv) => {
-      shell.exec(`node_modules/.bin/serve dist`);
+      const server = http.createServer((request, response) => {
+        // You pass two more arguments for config and middleware
+        // More details here: https://github.com/vercel/serve-handler#options
+        return handler(request, response, { public: 'dist' });
+      });
+
+      server.listen(3000, () => {
+        console.log('Running at http://localhost:3000');
+      });
     }
   )
   .option('verbose', {
