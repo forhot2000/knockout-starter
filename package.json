@@ -21,8 +21,10 @@
     "gulp-uglify": "^3.0.2",
     "serve": "^12.0.0",
     "shelljs": "^0.8.4",
+    "stringify": "^5.2.0",
     "through2": "^4.0.2",
     "tsify": "^5.0.4",
+    "vinyl-source-stream": "^2.0.0",
     "yargs": "^17.0.1"
   },
   "devDependencies": {}

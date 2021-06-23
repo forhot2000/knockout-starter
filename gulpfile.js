@@ -1,5 +1,6 @@
 const gulp = require('gulp');
 const uglify = require('gulp-uglify');
+const rename = require('gulp-rename');
 const newer = require('gulp-newer');
 const debug = require('gulp-debug');
 const browserify = require('./gulp-browserify');
@@ -10,34 +11,28 @@ const distDir = './dist';
 const bundleFile = distDir + '/bundle.js';
 
 function html() {
-  return (
-    gulp
-      .src('./public/**')
-      .pipe(newer(distDir))
-      // .pipe(debug({ title: 'html:' }))
-      .pipe(gulp.dest(distDir))
-  );
+  return gulp
+    .src('./public/**')
+    .pipe(newer(distDir))
+    .pipe(debug({ title: 'copy:' }))
+    .pipe(gulp.dest(distDir));
 }
 
 function jsDebug() {
-  return (
-    gulp
-      .src(entryFile)
-      .pipe(browserify({ output: bundleFile }))
-      // .pipe(debug({ title: 'jsDebug:' }))
-      .pipe(gulp.dest('.'))
-  );
+  return browserify(entryFile)
+    .pipe(debug({ title: 'src:', showCount: false }))
+    .pipe(rename(bundleFile))
+    .pipe(debug({ title: 'dest:', showCount: false }))
+    .pipe(gulp.dest('.'));
 }
 
 function jsMin() {
-  return (
-    gulp
-      .src(bundleFile)
-      .pipe(uglify())
-      .pipe(postfix('.min'))
-      // .pipe(debug({ title: 'jsMin:' }))
-      .pipe(gulp.dest(distDir))
-  );
+  return gulp
+    .src(bundleFile)
+    .pipe(uglify())
+    .pipe(postfix('.min'))
+    .pipe(debug({ title: 'uglify:' }))
+    .pipe(gulp.dest(distDir));
 }
 
 const js = gulp.series(jsDebug, jsMin);

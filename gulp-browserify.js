@@ -1,27 +1,47 @@
-const path = require('path');
-const Vinyl = require('vinyl');
-const through = require('through2');
+const source = require('vinyl-source-stream');
 const browserify = require('browserify');
+const stringify = require('stringify');
 const tsify = require('tsify');
 const debug = require('./debug');
 
-function gulpBrowserify(opts) {
-  opts = Object.assign({ output: './dist/bundle.js' }, opts);
-  const { output } = opts;
+const MINIFY_OPTIONS = {
+  removeComments: true,
+  ignoreCustomComments: [/[\s\/]ko[\s]/], // keep ko comments
+  removeCommentsFromCDATA: true,
+  removeCDATASectionsFromCDATA: true,
+  collapseWhitespace: true,
+  conservativeCollapse: false,
+  preserveLineBreaks: false,
+  collapseBooleanAttributes: false,
+  removeAttributeQuotes: true,
+  removeRedundantAttributes: false,
+  useShortDoctype: false,
+  removeEmptyAttributes: false,
+  removeScriptTypeAttributes: false,
+  removeStyleLinkTypeAttributes: false,
+  removeOptionalTags: false,
+  removeIgnored: false,
+  removeEmptyElements: false,
+  lint: false,
+  keepClosingSlash: false,
+  caseSensitive: false,
+  minifyJS: false,
+  minifyCSS: false,
+  minifyURLs: false
+};
 
-  return through.obj(function (file, _, cb) {
-    const _base = process.cwd();
-    const _relative = path.relative(_base, file.path);
-    // debug('gulp-browserify:', _relative);
+function gulpBrowserify(file) {
+  const bundleStream = browserify()
+    .plugin(tsify, { noImplicitAny: true })
+    .transform(stringify, {
+      appliesTo: { includeExtensions: ['.html'] },
+      minify: true,
+      minifyOptions: MINIFY_OPTIONS
+    })
+    .add(file) // main entry of an application
+    .bundle();
 
-    const bundle = browserify()
-      .add(_relative) // main entry of an application
-      .plugin(tsify, { noImplicitAny: true })
-      .bundle();
-
-    const transformed = new Vinyl({ path: output, contents: bundle });
-    cb(null, transformed);
-  });
+  return bundleStream.pipe(source(file));
 }
 
 module.exports = gulpBrowserify;
