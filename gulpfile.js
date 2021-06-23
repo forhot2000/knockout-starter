@@ -1,5 +1,6 @@
 const gulp = require('gulp');
 const uglify = require('gulp-uglify');
+const sourcemaps = require('gulp-sourcemaps');
 const rename = require('gulp-rename');
 const newer = require('gulp-newer');
 const debug = require('gulp-debug');
@@ -29,9 +30,11 @@ function jsDebug() {
 function jsMin() {
   return gulp
     .src(bundleFile)
+    .pipe(sourcemaps.init())
     .pipe(uglify({ ie8: true }))
     .pipe(postfix('.min'))
     .pipe(debug({ title: 'uglify:' }))
+    .pipe(sourcemaps.write('.', { includeContent: false }))
     .pipe(gulp.dest(distDir));
 }
 
