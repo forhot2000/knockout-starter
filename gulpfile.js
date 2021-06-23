@@ -33,7 +33,7 @@ function jsMin() {
     .pipe(sourcemaps.init())
     .pipe(uglify({ ie8: true }))
     .pipe(postfix('.min'))
-    .pipe(debug({ title: 'uglify:' }))
+    .pipe(debug({ title: 'uglify:', showCount: false }))
     .pipe(sourcemaps.write('.', { includeContent: false }))
     .pipe(gulp.dest(distDir));
 }
