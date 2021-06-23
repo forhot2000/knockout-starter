@@ -1,0 +1,39 @@
+{
+  "name": "@forhot2000/knockout-starter",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "debug": "^4.3.1"
+  },
+  "devDependencies": {
+    "@babel/preset-env": "^7.14.5",
+    "@babel/preset-typescript": "^7.14.5",
+    "@types/jest": "^26.0.23",
+    "@types/knockout": "^3.4.70",
+    "babelify": "^10.0.0",
+    "browserify": "^17.0.0",
+    "gulp": "^4.0.2",
+    "gulp-copy": "^4.0.1",
+    "gulp-rename": "^2.0.0",
+    "gulp-uglify": "^3.0.2",
+    "jest": "^27.0.4",
+    "rimraf": "^3.0.2",
+    "serve": "^12.0.0",
+    "shelljs": "^0.8.4",
+    "through2": "^4.0.2",
+    "ts-jest": "^27.0.3",
+    "tsify": "^5.0.4",
+    "typescript": "^4.3.4",
+    "yargs": "^17.0.1"
+  },
+  "bin": {
+    "knockout-starter": "index.js"
+  }
+}
