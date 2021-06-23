@@ -29,7 +29,7 @@ function jsDebug() {
 function jsMin() {
   return gulp
     .src(bundleFile)
-    .pipe(uglify())
+    .pipe(uglify({ ie8: true }))
     .pipe(postfix('.min'))
     .pipe(debug({ title: 'uglify:' }))
     .pipe(gulp.dest(distDir));
