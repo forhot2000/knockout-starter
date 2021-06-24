@@ -44,5 +44,7 @@ const build = gulp.series(html, js);
 
 exports.html = html;
 exports.js = js;
+exports.jsDebug = jsDebug;
+exports.jsMin = jsMin;
 exports.build = build;
 exports.default = gulp.series(build);
